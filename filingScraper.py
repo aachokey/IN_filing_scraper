@@ -11,7 +11,6 @@ contribs_base_url = "http://campaignfinance.in.gov/PublicSite/Filings/Schedules/
 expenses_base_url = "http://campaignfinance.in.gov/PublicSite/Filings/Schedules/ViewExpenditureSchedule.aspx?FilingID="
 contrib_headers = ["date", "type", "contributor", "address", "occupation", "amount", "aggregate", "election_comm", "explanation"]
 expense_headers = ["date", "disbursement_type", "expenditure_type", "payee", "address", "occupation", "amount", "explanation"]
-
 pence_filings = [58176, 58175, 54573, 54572, 50042, 50041, 45265, 45264, 45263, 45262, 45261, 44726, 44727]
 gregg_filings = [58162, 58161, 54567, 54566, 50028, 50027, 51099, 45245, 45244, 45243, 45242, 45241, 44734]
 
@@ -31,7 +30,7 @@ def main():
 
 def get_pence_expenses():
 
-    # Loop through each of the filings for pence
+    # Loop through each of the filings for Pence.
     for filing in pence_filings:
         filing_page = expenses_base_url + str(filing)
         r = requests.get(filing_page)
@@ -40,7 +39,7 @@ def get_pence_expenses():
         soup = BeautifulSoup(r.content, "html.parser")
         table = soup.find('table', attrs={'class': 'frmDataGrid'})
 
-        # Collect all of the rows from the table.
+    # Collect all of the rows from the table.
         try:
             list_of_rows = []
             for row in table.findAll('tr'):
@@ -50,7 +49,7 @@ def get_pence_expenses():
                     list_of_cells.append(text)
                 list_of_rows.append(list_of_cells)
 
-            # Write the results to a csv file
+    # Write the results to a csv file
             with open("./pence/expenditures/" + str(filing) + ".csv", "w", newline='') as outfile:
                 writer = csv.writer(outfile)
                 writer.writerows(expense_headers)
@@ -65,7 +64,7 @@ def get_pence_expenses():
 
 def get_pence_contribs():
 
-    # Loop through each of the filings for pence
+    # Loop through each of the filings for Pence.
     for filing in pence_filings:
         filing_page = contribs_base_url + str(filing)
         r = requests.get(filing_page)
@@ -74,7 +73,7 @@ def get_pence_contribs():
         soup = BeautifulSoup(r.content, "html.parser")
         table = soup.find('table', attrs={'class': 'frmDataGrid'})
 
-        # Collect all of the rows from the table.
+    # Collect all of the rows from the table.
         try:
             list_of_rows = []
             for row in table.findAll('tr'):
@@ -84,7 +83,7 @@ def get_pence_contribs():
                     list_of_cells.append(text)
                 list_of_rows.append(list_of_cells)
 
-            # Write the results to a csv file
+    # Write the results to a csv file
             with open("./pence/contributions/" + str(filing) + ".csv", "w", newline='') as outfile:
                 writer = csv.writer(outfile)
                 writer.writerows(contrib_headers)
@@ -99,7 +98,7 @@ def get_pence_contribs():
 
 def get_gregg_expenses():
 
-    # Loop through each of the filings for pence
+    # Loop through each of the filings for Gregg.
     for filing in gregg_filings:
         filing_page = expenses_base_url + str(filing)
         r = requests.get(filing_page)
@@ -108,7 +107,7 @@ def get_gregg_expenses():
         soup = BeautifulSoup(r.content, "html.parser")
         table = soup.find('table', attrs={'class': 'frmDataGrid'})
 
-        # Collect all of the rows from the table.
+    # Collect all of the rows from the table.
         try:
             list_of_rows = []
             for row in table.findAll('tr'):
@@ -118,7 +117,7 @@ def get_gregg_expenses():
                     list_of_cells.append(text)
                 list_of_rows.append(list_of_cells)
 
-            # Write the results to a csv file
+    # Write the results to a csv file
             with open("./gregg/expenditures/" + str(filing) + ".csv", "w", newline='') as outfile:
                 writer = csv.writer(outfile)
                 writer.writerows(expense_headers)
@@ -133,7 +132,7 @@ def get_gregg_expenses():
 
 def get_gregg_contribs():
 
-    # Loop through each of the filings for pence
+    # Loop through each of the filings for Gregg.
     for filing in gregg_filings:
         filing_page = contribs_base_url + str(filing)
         r = requests.get(filing_page)
@@ -142,7 +141,7 @@ def get_gregg_contribs():
         soup = BeautifulSoup(r.content, "html.parser")
         table = soup.find('table', attrs={'class': 'frmDataGrid'})
         try:
-            # Collect all of the r  ows from the table.
+    # Collect all of the rows from the table.
             list_of_rows = []
             for row in table.findAll('tr'):
                 list_of_cells = []
@@ -151,7 +150,7 @@ def get_gregg_contribs():
                     list_of_cells.append(text)
                 list_of_rows.append(list_of_cells)
 
-            # Write the results to a csv file
+    # Write the results to a csv file
             with open("./gregg/contributions/" + str(filing) + ".csv", "w", newline='') as outfile:
                 writer = csv.writer(outfile)
                 writer.writerows(contrib_headers)
