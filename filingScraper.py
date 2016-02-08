@@ -9,6 +9,9 @@ import time
 # Global variables
 contribs_base_url = "http://campaignfinance.in.gov/PublicSite/Filings/Schedules/ViewContributionSchedule.aspx?FilingID="
 expenses_base_url = "http://campaignfinance.in.gov/PublicSite/Filings/Schedules/ViewExpenditureSchedule.aspx?FilingID="
+contrib_headers = ["date", "type", "contributor", "address", "occupation", "amount", "aggregate", "election_comm", "explanation"]
+expense_headers = ["date", "disbursement_type", "expenditure_type", "payee", "address", "occupation", "amount", "explanation"]
+
 pence_filings = [58176, 58175, 54573, 54572, 50042, 50041, 45265, 45264, 45263, 45262, 45261, 44726, 44727]
 gregg_filings = [58162, 58161, 54567, 54566, 50028, 50027, 51099, 45245, 45244, 45243, 45242, 45241, 44734]
 
@@ -50,6 +53,7 @@ def get_pence_expenses():
             # Write the results to a csv file
             with open("./pence/expenditures/" + str(filing) + ".csv", "w", newline='') as outfile:
                 writer = csv.writer(outfile)
+                writer.writerows(expense_headers)
                 writer.writerows(list_of_rows)
         except:
             print("There might not be a anything here for file " + str(filing) + ".")
@@ -83,6 +87,7 @@ def get_pence_contribs():
             # Write the results to a csv file
             with open("./pence/contributions/" + str(filing) + ".csv", "w", newline='') as outfile:
                 writer = csv.writer(outfile)
+                writer.writerows(contrib_headers)
                 writer.writerows(list_of_rows)
         except:
             print("There might not be a anything here for file " + str(filing) + ".")
@@ -116,6 +121,7 @@ def get_gregg_expenses():
             # Write the results to a csv file
             with open("./gregg/expenditures/" + str(filing) + ".csv", "w", newline='') as outfile:
                 writer = csv.writer(outfile)
+                writer.writerows(expense_headers)
                 writer.writerows(list_of_rows)
         except:
             print("There might not be a anything here for file " + str(filing) + ".")
@@ -148,6 +154,7 @@ def get_gregg_contribs():
             # Write the results to a csv file
             with open("./gregg/contributions/" + str(filing) + ".csv", "w", newline='') as outfile:
                 writer = csv.writer(outfile)
+                writer.writerows(contrib_headers)
                 writer.writerows(list_of_rows)
                 print("Finished file number %s." % filing)
         except:
