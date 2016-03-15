@@ -19,26 +19,20 @@ def main():
     Our function names are a table of contents for what we want to do.
     """
     start_time = time.time()
-    print("Campaign finance snooping commencing...")
     get_pence_expenses()
     get_pence_contribs()
     get_gregg_expenses()
     get_gregg_contribs()
-
     print("All files are scraped. It took " " %s seconds." % (time.time() - start_time))
 
 
 def get_pence_expenses():
-
     # Loop through each of the filings for Pence.
     for filing in pence_filings:
         filing_page = expenses_base_url + str(filing)
         r = requests.get(filing_page)
-        r.raise_for_status()
-
         soup = BeautifulSoup(r.content, "html.parser")
         table = soup.find('table', attrs={'class': 'frmDataGrid'})
-
     # Collect all of the rows from the table.
         try:
             list_of_rows = []
@@ -48,12 +42,11 @@ def get_pence_expenses():
                     text = cell.text.strip().replace('\n', ' ')
                     list_of_cells.append(text)
                 list_of_rows.append(list_of_cells)
-
     # Write the results to a csv file
-            with open("./pence/expenditures/" + str(filing) + ".csv", "w", newline='') as outfile:
+            with open("pence/expense-" + str(filing) + ".csv", "w", newline='') as outfile:
                 writer = csv.writer(outfile)
-                writer.writerows(expense_headers)
                 writer.writerows(list_of_rows)
+    # Exception in case there aren't any entries for that filing. Be sure to manually check when bulletproofing.
         except:
             print("There might not be a anything here for file " + str(filing) + ".")
             continue
@@ -63,13 +56,10 @@ def get_pence_expenses():
 
 
 def get_pence_contribs():
-
     # Loop through each of the filings for Pence.
     for filing in pence_filings:
         filing_page = contribs_base_url + str(filing)
         r = requests.get(filing_page)
-        r.raise_for_status()
-
         soup = BeautifulSoup(r.content, "html.parser")
         table = soup.find('table', attrs={'class': 'frmDataGrid'})
 
@@ -84,9 +74,8 @@ def get_pence_contribs():
                 list_of_rows.append(list_of_cells)
 
     # Write the results to a csv file
-            with open("./pence/contributions/" + str(filing) + ".csv", "w", newline='') as outfile:
+            with open("pence/contrib-" + str(filing) + ".csv", "w", newline='') as outfile:
                 writer = csv.writer(outfile)
-                writer.writerows(contrib_headers)
                 writer.writerows(list_of_rows)
         except:
             print("There might not be a anything here for file " + str(filing) + ".")
@@ -102,8 +91,6 @@ def get_gregg_expenses():
     for filing in gregg_filings:
         filing_page = expenses_base_url + str(filing)
         r = requests.get(filing_page)
-        r.raise_for_status()
-
         soup = BeautifulSoup(r.content, "html.parser")
         table = soup.find('table', attrs={'class': 'frmDataGrid'})
 
@@ -118,9 +105,8 @@ def get_gregg_expenses():
                 list_of_rows.append(list_of_cells)
 
     # Write the results to a csv file
-            with open("./gregg/expenditures/" + str(filing) + ".csv", "w", newline='') as outfile:
+            with open("gregg/expense-" + str(filing) + ".csv", "w", newline='') as outfile:
                 writer = csv.writer(outfile)
-                writer.writerows(expense_headers)
                 writer.writerows(list_of_rows)
         except:
             print("There might not be a anything here for file " + str(filing) + ".")
@@ -136,10 +122,9 @@ def get_gregg_contribs():
     for filing in gregg_filings:
         filing_page = contribs_base_url + str(filing)
         r = requests.get(filing_page)
-        r.raise_for_status()
-
         soup = BeautifulSoup(r.content, "html.parser")
         table = soup.find('table', attrs={'class': 'frmDataGrid'})
+
         try:
     # Collect all of the rows from the table.
             list_of_rows = []
@@ -151,9 +136,8 @@ def get_gregg_contribs():
                 list_of_rows.append(list_of_cells)
 
     # Write the results to a csv file
-            with open("./gregg/contributions/" + str(filing) + ".csv", "w", newline='') as outfile:
+            with open("gregg/contrib-" + str(filing) + ".csv", "w", newline='') as outfile:
                 writer = csv.writer(outfile)
-                writer.writerows(contrib_headers)
                 writer.writerows(list_of_rows)
                 print("Finished file number %s." % filing)
         except:
@@ -162,6 +146,8 @@ def get_gregg_contribs():
         time.sleep(3)
     print("Gregg's contributions have been scraped.")
 
+
 if __name__ == "__main__":
     # This function executes when you do "filingScraper.py" on the command line.
+    print("Campaign finance snooping commencing...")
     main()
